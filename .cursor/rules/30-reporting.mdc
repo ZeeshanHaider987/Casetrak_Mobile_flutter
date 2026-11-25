@@ -1,0 +1,18 @@
+---
+globs: lib/features/reporting/**
+description: Aging buckets, health/risk enums, forex, chart types
+---
+
+# Reporting Rules
+
+- Aging buckets are exactly: 0-29, 30-59, 60-89, 90+.
+- Health badge: Excellent=green, Good=blue, Fair=amber, Poor=orange,
+  Critical=red.
+- Risk chips: Low=green, Medium=amber, High=orange, Critical=red.
+- Multi-currency: always convert via forex_rate (seeded). Show a badge
+  when conversion was applied. Never sum raw amounts across currencies.
+- Charts use fl_chart. Aging = horizontal stacked bar. Monthly billing =
+  grouped bar by month × practiceArea. Invoices by bucket = bar + table
+  toggle.
+- Every reporting screen must also render OK/Fail + latency in the
+  Reporting Health Check view.

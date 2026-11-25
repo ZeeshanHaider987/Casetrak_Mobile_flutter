@@ -1,0 +1,24 @@
+---
+globs: lib/core/lookups/**
+description: LookupManager cache, TTL, batch fetch, and invalidation rules
+---
+
+# Lookup Infrastructure
+
+## The 29 keys (exhaustive)
+nameTitle, industryType, addressType, country, pocList, clientType,
+partnerList, aquiredPartnerList, feeEarnerList, personAssistList,
+allUserAssignList, practicesArea, companyClients, feeType, expenseType,
+entitiesStatusType, department, currency, clientGroup, caseType,
+caseStatusType, billingType, roundingIncrements, userTypes, timezones,
+chargeTypes, legalAidStatuses.
+
+## Cache rules
+- Two TTL tiers: shortCacheDuration (volatile: companyClients,
+  allUserAssignList, feeEarnerList) and longCacheDuration (stable:
+  country, currency, timezones).
+- Expose cacheTimestamps per key.
+- forceRefresh(key), invalidate(key), invalidateAll().
+- Batch fetch all keys in one Future.wait on login.
+- Auto-invalidate volatile keys on AppLifecycleState.resumed.
+- Expose loadingState and errorState per key.

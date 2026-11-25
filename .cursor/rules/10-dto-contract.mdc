@@ -1,0 +1,45 @@
+---
+globs: lib/features/**/data/**, lib/core/network/**
+description: Exact DTO names and shapes from the CaseTrak backend
+---
+
+# DTO Contract (verbatim — do not rename fields)
+
+## Reporting
+UnpaidInvoiceAgingDto, UnpaidInvoiceAgingRequest, UnpaidInvoiceAgingResponse,
+MonthlyBillingDto, MonthlyBillingRequest, MonthlyBillingResponse,
+ReportingOverviewResponse, AgingBucketSummary (0-29, 30-59, 60-89, 90+),
+AgingReportSummaryResponse (healthStatus: Excellent|Good|Fair|Poor|Critical),
+BillingKpiResponse (riskLevel: Low|Medium|High|Critical),
+InvoiceAgingDetailDto.
+
+## Matter Payer
+GetMatterPayerDto, CreateMatterPayerRequest, UpdateMatterPayerRequest,
+MatterPayerResponse, MatterPayerListResponse.
+Fields: invoicePortion, sendCopy, billRecipient, relationshipType, isDefault.
+
+## Matter Related Contact
+GetMatterRelatedContactDto, CreateMatterRelatedContactRequest,
+UpdateMatterRelatedContactRequest, MatterRelatedContactResponse,
+MatterRelatedContactListResponse.
+Fields: relationshipType, isDefaultRecipient, isActive.
+
+## Case Trust Notification Recipient
+GetCaseTrustNotificationRecipientDto,
+CreateCaseTrustNotificationRecipientRequest,
+UpdateCaseTrustNotificationRecipientRequest,
+CaseTrustNotificationRecipientResponse,
+CaseTrustNotificationRecipientListResponse.
+Fields: isNotifiedRecipient, isActive.
+
+## Management
+GetManagementDto, UpdateManagementRequest.
+
+## Client creation
+CreateIndividualClientRequest, CreateCompanyClientRequest,
+CreateTrusteeClientRequest, ClientDto.
+
+## Envelope / errors
+ApiResponse<T> (success, data, errors[]).
+InvalidClientException, DuplicateClientException — map to typed Dart
+exceptions; never let them surface as raw DioException.

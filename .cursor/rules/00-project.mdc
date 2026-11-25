@@ -1,0 +1,32 @@
+---
+alwaysApply: true
+description: Core stack, architecture, and non-negotiables for CaseTrak Mobile
+---
+
+# CaseTrak Mobile — Non-Negotiables
+
+## Stack
+Flutter 3.x + Dart 3, Material 3, Riverpod, go_router, dio, freezed,
+shared_preferences, hive, flutter_secure_storage, fl_chart.
+
+## Architecture
+Feature-first. Every feature has data/ (models, mock repo, remote repo),
+domain/ (interfaces), presentation/ (screens, widgets, providers).
+Every repository interface MUST have MockXRepo and RemoteXRepo.
+USE_MOCK=true|false via --dart-define selects the implementation.
+
+## Hard constraints
+- Never invent DTO field names. The contract lives in @10-dto-contract.mdc.
+- Never hardcode dropdown options. All options come from LookupManager.
+- Never sum money across currencies without forex_rate conversion.
+- Never re-filter matters client-side for MatterAccess; the API already does it.
+- Backend is out of scope. Flutter client only.
+
+## Routing table
+| Task | Read first |
+|---|---|
+| Auth / JWT | @docs/STATE-auth.md |
+| Parties CRUD | @docs/STATE-parties.md |
+| Reporting | @docs/STATE-reporting.md |
+| Lookups | @docs/STATE-lookups.md |
+| Clients | @docs/STATE-clients.md |
