@@ -13,6 +13,7 @@ class LookupDropdown extends ConsumerWidget {
     required this.value,
     required this.onChanged,
     this.allowClear = true,
+    this.errorText,
   });
 
   final String lookupKey;
@@ -20,6 +21,7 @@ class LookupDropdown extends ConsumerWidget {
   final String? value;
   final ValueChanged<String?> onChanged;
   final bool allowClear;
+  final String? errorText;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,6 +41,7 @@ class LookupDropdown extends ConsumerWidget {
       initialValue: hasValue ? value : null,
       decoration: InputDecoration(
         labelText: label,
+        errorText: errorText,
         helperText: loading ? 'Loading $label…' : (error != null ? 'Could not load $label' : null),
         suffixIcon: allowClear && hasValue
             ? IconButton(

@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/config/app_config.dart';
 import '../../../core/lookups/lookup_providers.dart';
-import '../../clients/presentation/client_providers.dart';
 import '../data/mock_parties_repo.dart';
 import '../data/models/party_dtos.dart';
 import '../data/remote_parties_repo.dart';
@@ -79,8 +78,7 @@ class PartiesController extends FamilyAsyncNotifier<PartiesSnapshot, String> {
     ));
     try {
       await ref.read(partiesRepositoryProvider).deletePayer(id);
-      ref.invalidateSelf();
-      await future;
+      await _reload();
     } catch (error, stack) {
       state = AsyncError(error, stack);
     }
@@ -88,8 +86,7 @@ class PartiesController extends FamilyAsyncNotifier<PartiesSnapshot, String> {
 
   Future<void> updatePayer(String id, UpdateMatterPayerRequest request) async {
     await ref.read(partiesRepositoryProvider).updatePayer(id, request);
-    ref.invalidateSelf();
-    await future;
+    await _reload();
   }
 
   Future<void> createRelated(CreateMatterRelatedContactRequest request) => _optimistic(
@@ -116,8 +113,7 @@ class PartiesController extends FamilyAsyncNotifier<PartiesSnapshot, String> {
     ));
     try {
       await ref.read(partiesRepositoryProvider).deleteRelated(id);
-      ref.invalidateSelf();
-      await future;
+      await _reload();
     } catch (error, stack) {
       state = AsyncError(error, stack);
     }
@@ -125,8 +121,7 @@ class PartiesController extends FamilyAsyncNotifier<PartiesSnapshot, String> {
 
   Future<void> updateRelated(String id, UpdateMatterRelatedContactRequest request) async {
     await ref.read(partiesRepositoryProvider).updateRelated(id, request);
-    ref.invalidateSelf();
-    await future;
+    await _reload();
   }
 
   Future<void> createTrust(CreateCaseTrustNotificationRecipientRequest request) => _optimistic(
@@ -152,8 +147,7 @@ class PartiesController extends FamilyAsyncNotifier<PartiesSnapshot, String> {
     ));
     try {
       await ref.read(partiesRepositoryProvider).deleteTrust(id);
-      ref.invalidateSelf();
-      await future;
+      await _reload();
     } catch (error, stack) {
       state = AsyncError(error, stack);
     }
@@ -161,8 +155,11 @@ class PartiesController extends FamilyAsyncNotifier<PartiesSnapshot, String> {
 
   Future<void> updateTrust(String id, UpdateCaseTrustNotificationRecipientRequest request) async {
     await ref.read(partiesRepositoryProvider).updateTrust(id, request);
-    ref.invalidateSelf();
-    await future;
+    await _reload();
+  }
+
+  Future<void> _reload() async {
+    state = AsyncData(await _load(arg));
   }
 
   Future<void> _optimistic({
@@ -174,8 +171,7 @@ class PartiesController extends FamilyAsyncNotifier<PartiesSnapshot, String> {
     state = AsyncData(apply(confirmed));
     try {
       await persist();
-      ref.invalidateSelf();
-      await future;
+      await _reload();
     } catch (error, stack) {
       state = AsyncData(confirmed);
       Error.throwWithStackTrace(error, stack);
